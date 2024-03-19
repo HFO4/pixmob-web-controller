@@ -1,12 +1,11 @@
 class MyProcessor extends AudioWorkletProcessor {
-  data = [
-    1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1,
-  ];
+  data = ${JSON.stringify(inst)};
   sampleRate = 44100;
-  cfreq = 36000; // The infrared carrier frequency
-  pperunit = 30; //The carrier frequency period per time unit, 694.44*(36000/1000000)     // Total length of a code (in time units)
+  cfreq = 38000; // The infrared carrier frequency
+  cfreqHalf = 19000; // The infrared carrier frequency
+  pperunit = 26; //The carrier frequency period per time unit, 694.44*(36000/1000000)     // Total length of a code (in time units)
   totalSamples = Math.round(
-    this.sampleRate * (1 / this.cfreq) * this.pperunit * this.data.length,
+      this.sampleRate * (1 / this.cfreq) * this.pperunit * this.data.length,
   );
   previousSampledIndex = 0;
 
@@ -17,15 +16,14 @@ class MyProcessor extends AudioWorkletProcessor {
       for (let i = 0; i < output[channel].length; i += 1) {
         if (sampledIndex <= this.totalSamples) {
           const dataIndex = Math.floor(
-            ((sampledIndex / this.sampleRate) * this.cfreq) / this.pperunit,
+              ((sampledIndex / this.sampleRate) * this.cfreq) / this.pperunit,
           );
+          console.log(dataIndex);
           if (this.data[dataIndex] !== 0) {
+            // sin( float(i) * M_PI * float(19000) / float(sampleRate) );
             output[channel][i] = Math.sin(
-              (sampledIndex / this.totalSamples) *
-                Math.PI *
-                this.cfreq *
-                (this.totalSamples / this.sampleRate),
-            );
+                sampledIndex * Math.PI * this.cfreqHalf / this.sampleRate,
+            ) * (channel === 0 ? 1 : -1);
           } else {
             output[channel][i] = 0;
           }
@@ -42,3 +40,4 @@ class MyProcessor extends AudioWorkletProcessor {
 }
 
 registerProcessor("ir-processor", MyProcessor);
+

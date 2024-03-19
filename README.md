@@ -1,30 +1,16 @@
-# React + TypeScript + Vite
+# Pixmob-IR-Web-UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project provides a simple way to control your PixMob LED Wristbands using a web interface + IR Blaster on your phone.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Hardware Requirements
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+This projects generates audio waveform that carries the control signal for the PixMob LED Wristbands. The audio signal is then transmitted using the IR Blaster on your phone. Currently, only audio-based IR Blaster is supported:
 
-- Configure the top-level `parserOptions` property like this:
+* For iPhone (Lighting/Type-C) users, most available IR Blaster on the market should work.
+* If you don't have iOS devices, considering using a 3.5mm audio jack IR blaster on other devices (e.g. your laptop).
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Credits
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+This projects is inspired and constructed based on [danielweidman/pixmob-ir-reverse-engineering](https://github.com/danielweidman/pixmob-ir-reverse-engineering).

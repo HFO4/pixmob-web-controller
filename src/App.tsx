@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   Grid,
   Modal,
   Sheet,
@@ -10,7 +12,9 @@ import {
 } from "@mui/joy";
 import BasicInstructions from "./Tabs/BasicInstructions.tsx";
 import Effects from "./Tabs/Effects.tsx";
-import { useState } from "react";
+import React, { useState } from "react";
+import { GitHub } from "./Icons/GitHub.tsx";
+import { Flip } from "./Icons/Flip.tsx";
 
 export interface TabProps {
   onSending: () => void;
@@ -19,10 +23,43 @@ export interface TabProps {
 
 function App() {
   const [sending, setSending] = useState(false);
+  const flip = () => {
+    window.document.body.style.transform =
+      window.document.body.style.transform != "" ? "" : "rotate(-180deg)";
+  };
   return (
     <>
       <Grid container spacing={1} sx={{ flexGrow: 1 }}>
         <Grid xs={12}>
+          <Box
+            sx={{
+              mx: 1,
+              mt: 3,
+            }}
+          >
+            <Typography level="h3" variant="plain">
+              Pixmob 遥控器
+            </Typography>
+            <Box sx={{ mt: 1 }}>
+              <Button
+                component="a"
+                target={"_blank"}
+                href="https://github.com/HFO4/pixmob-web-controller"
+                variant="soft"
+                startDecorator={<GitHub />}
+              >
+                GitHub
+              </Button>
+              <Button
+                sx={{ ml: 1 }}
+                startDecorator={<Flip />}
+                variant="soft"
+                onClick={() => flip()}
+              >
+                上下反转页面
+              </Button>
+            </Box>
+          </Box>
           <Sheet
             sx={{
               mx: 1,
