@@ -1,7 +1,6 @@
-import { register } from "extendable-media-recorder";
-import { connect } from "extendable-media-recorder-wav-encoder";
+//import { register } from "extendable-media-recorder";
 
-await register(await connect());
+// await register(await connect());
 
 const sampleRate = 44100;
 const mutiply = 0;
@@ -72,7 +71,7 @@ export async function PlayInstruction(inst: number[]) {
   });
   irGenerator.connect(audioContext.destination);
 
-  const dest = audioContext.createMediaStreamDestination();
+  // const dest = audioContext.createMediaStreamDestination();
 
   // Uncomment if you want to save to WAV
   // const mediaRecorder = new MediaRecorder(dest.stream, {

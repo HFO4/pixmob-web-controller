@@ -14,7 +14,6 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/inter": "^5.0.17",
     "@mui/joy": "^5.0.0-beta.31",
-    "extendable-media-recorder": "^9.1.11",
     "extendable-media-recorder-wav-encoder": "^7.0.106",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
