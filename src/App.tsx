@@ -12,7 +12,7 @@ import {
 } from "@mui/joy";
 import BasicInstructions from "./Tabs/BasicInstructions.tsx";
 import Effects from "./Tabs/Effects.tsx";
-import React, { useState } from "react";
+import { useState } from "react";
 import { GitHub } from "./Icons/GitHub.tsx";
 import { Flip } from "./Icons/Flip.tsx";
 

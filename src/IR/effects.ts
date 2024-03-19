@@ -133,7 +133,16 @@ export interface ColorEffect {
   id: string;
   data: number[];
   label: string;
-  buttonColor: string;
+  buttonColor:
+    | "danger"
+    | "success"
+    | "primary"
+    | "magenta"
+    | "yellow"
+    | "pink"
+    | "orange"
+    | "secondary"
+    | "turquoise";
 }
 
 export const colorEffects: ColorEffect[] = [
