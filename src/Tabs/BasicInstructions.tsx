@@ -3,6 +3,9 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
+  FormHelperText,
+  Input,
   Select,
   Stack,
   Typography,
@@ -17,6 +20,8 @@ const NoTailCode = "NoTailCode";
 
 const BasicInstructions = (props: TabProps) => {
   const [tailCode, setTailCode] = useState(NoTailCode);
+  const [bpm, setBpm] = useState("");
+  const [duration, setDuration] = useState("");
   const handleTailCodeChange = (
     _event: React.SyntheticEvent | null,
     newValue: string | null,
@@ -43,7 +48,17 @@ const BasicInstructions = (props: TabProps) => {
 
       // send POST request to
       try {
-        await PlayInstruction(colorCodes);
+        if (bpm && duration) {
+          const bpmInt = parseInt(bpm);
+          const durationSec = parseInt(duration);
+          const loopCount = Math.ceil(durationSec / (60 / bpmInt));
+          for (let i = 0; i < loopCount; i++) {
+            await PlayInstruction(colorCodes);
+            await new Promise((r) => setTimeout(r, 60000 / bpmInt - 500));
+          }
+        } else {
+          await PlayInstruction(colorCodes);
+        }
       } catch (e) {
         alert(e);
       } finally {
@@ -53,7 +68,7 @@ const BasicInstructions = (props: TabProps) => {
       props.onSendComplete();
       console.log(colorCodes);
     },
-    [tailCode, props.onSendComplete, props.onSending],
+    [bpm, duration, tailCode, props.onSendComplete, props.onSending],
   );
 
   return (
@@ -71,6 +86,43 @@ const BasicInstructions = (props: TabProps) => {
               </Option>
             ))}
           </Select>
+        </Stack>
+        <Stack spacing={1}>
+          <Typography level="title-sm">
+            2. [可选，留空就只发送一次] 设定循环发送 BPM
+          </Typography>
+          <FormControl>
+            <Input
+              slotProps={{
+                input: {
+                  type: "number",
+                  min: "10",
+                  max: "120",
+                },
+              }}
+              value={bpm}
+              onChange={(e) => setBpm(e.target.value)}
+              placeholder="BPM"
+            />
+            <FormHelperText>
+              太高的 BPM +
+              较长的渐变效果会导致手环来不及响应新指令，此时可以尝试填入
+              BPM/2。比如 《You Need To Calm Down》的 BPM 是 85，此处可以填入
+              42.5。
+            </FormHelperText>
+          </FormControl>
+          <FormControl>
+            <Input
+              slotProps={{
+                input: {
+                  type: "number",
+                },
+              }}
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              placeholder="持续时间（秒）"
+            />
+          </FormControl>
         </Stack>
         <Stack spacing={1}>
           <Typography level="title-sm">2. 发送颜色指令</Typography>

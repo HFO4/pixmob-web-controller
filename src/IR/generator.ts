@@ -91,7 +91,7 @@ export async function PlayInstruction(inst: number[]) {
 
   //mediaRecorder.start();
   await audioContext.resume();
-  await new Promise((r) => setTimeout(r, 1000));
+  await new Promise((r) => setTimeout(r, 500));
   await audioContext.close();
   //mediaRecorder.stop();
 }
