@@ -34,7 +34,6 @@ class MyProcessor extends AudioWorkletProcessor {
           const dataIndex = Math.floor(
               ((sampledIndex / this.sampleRate) * this.cfreq) / this.pperunit,
           );
-          console.log(dataIndex);
           if (this.data[dataIndex] !== 0) {
             // sin( float(i) * M_PI * float(19000) / float(sampleRate) );
             output[channel][i] = Math.sin(
@@ -63,7 +62,11 @@ registerProcessor("ir-processor", MyProcessor);
   return URL.createObjectURL(blob);
 };
 
-export async function PlayInstruction(inst: number[]) {
+export async function PlayInstruction(
+  inst: number[],
+  bpm?: string,
+  duration?: string,
+) {
   const audioContext = new AudioContext({ sampleRate });
   await audioContext.audioWorklet.addModule(getAudioWorkletBlob(inst));
   const irGenerator = new AudioWorkletNode(audioContext, "ir-processor", {
@@ -90,8 +93,26 @@ export async function PlayInstruction(inst: number[]) {
   // };
 
   //mediaRecorder.start();
+
   await audioContext.resume();
-  await new Promise((r) => setTimeout(r, 500));
+  if (bpm && duration) {
+    const bpmInt = parseInt(bpm);
+    const durationSec = parseInt(duration);
+    const loopCount = Math.ceil(durationSec / (60 / bpmInt));
+    for (let i = 0; i < loopCount; i++) {
+      const t0 = performance.now();
+      await new Promise((r) => setTimeout(r, 500));
+      const d = performance.now() - t0;
+      console.log(Math.max(60000 / bpmInt - d, 1));
+      await new Promise((r) => setTimeout(r, Math.max(60000 / bpmInt - d, 1)));
+      new AudioWorkletNode(audioContext, "ir-processor", {
+        outputChannelCount: [2],
+      }).connect(audioContext.destination);
+    }
+  } else {
+    await new Promise((r) => setTimeout(r, 500));
+  }
+
   await audioContext.close();
   //mediaRecorder.stop();
 }

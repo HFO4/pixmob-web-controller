@@ -48,17 +48,7 @@ const BasicInstructions = (props: TabProps) => {
 
       // send POST request to
       try {
-        if (bpm && duration) {
-          const bpmInt = parseInt(bpm);
-          const durationSec = parseInt(duration);
-          const loopCount = Math.ceil(durationSec / (60 / bpmInt));
-          for (let i = 0; i < loopCount; i++) {
-            await PlayInstruction(colorCodes);
-            await new Promise((r) => setTimeout(r, 60000 / bpmInt - 500));
-          }
-        } else {
-          await PlayInstruction(colorCodes);
-        }
+        await PlayInstruction(colorCodes, bpm, duration);
       } catch (e) {
         alert(e);
       } finally {
@@ -125,7 +115,7 @@ const BasicInstructions = (props: TabProps) => {
           </FormControl>
         </Stack>
         <Stack spacing={1}>
-          <Typography level="title-sm">2. 发送颜色指令</Typography>
+          <Typography level="title-sm">3. 发送颜色指令</Typography>
           <Box>
             {colorEffects.slice(0, 9).map((effect) => (
               <Button
